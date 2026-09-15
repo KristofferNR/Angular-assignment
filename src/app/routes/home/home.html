@@ -1,0 +1,15 @@
+<section class="max-w-7xl mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-6">Products</h1>
+
+  @if (product.isLoading()) {
+    <p>Laddar produkter...</p>
+  }
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+    @for (item of product.value(); track item.id) {
+      <product-card [product]="item" />
+    }
+
+  </div>
+</section>

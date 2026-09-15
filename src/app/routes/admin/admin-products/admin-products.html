@@ -1,0 +1,95 @@
+<section class="max-w-7xl mx-auto p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Products</h1>
+    </div>
+
+    <a
+      routerLink="/admin/products/new"
+      class="bg-black text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors"
+    >
+      + New Product
+    </a>
+  </div>
+
+  <div class="bg-white border border-gray-200 rounded overflow-x-auto">
+    <table class="w-full text-left text-sm text-gray-700">
+      <thead
+        class="bg-gray-50 border-b border-gray-200 text-xs uppercase font-medium text-gray-500 tracking-wider"
+      >
+        <tr>
+          <th scope="col" class="py-3 px-4 w-16">Image</th>
+          <th scope="col" class="py-3 px-4">Name</th>
+          <th scope="col" class="py-3 px-4">SKU</th>
+          <th scope="col" class="py-3 px-4">Brand</th>
+          <th scope="col" class="py-3 px-4">Price</th>
+          <th scope="col" class="py-3 px-4">Date</th>
+          <th scope="col" class="py-3 px-4 text-right">Delete</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-gray-100">
+        @if (product.isLoading()) {
+          <tr>
+            <td colspan="7" class="py-8 text-center text-gray-400">Fetching products...</td>
+          </tr>
+        } @else if (product.error()) {
+          <tr>
+            <td colspan="7" class="py-8 text-center text-red-500 text-sm">
+              Could not fetch products.
+            </td>
+          </tr>
+        } @else if (products().length === 0) {
+          <tr>
+            <td colspan="7" class="py-8 text-center text-gray-400">No products added.</td>
+          </tr>
+        } @else {
+          @for (item of products(); track item.id) {
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="py-3 px-4">
+                <img
+                  [src]="item.image"
+                  [alt]="item.name"
+                  class="w-12 h-14 object-cover rounded bg-gray-100 border border-gray-200"
+                />
+              </td>
+
+              <td class="py-3 px-4">
+                <a
+                  [routerLink]="['/products', item.slug]"
+                  class="font-medium text-gray-900 hover:underline"
+                >
+                  {{ item.name }}
+                </a>
+                <div class="text-xs text-gray-400 font-mono">/{{ item.slug }}</div>
+              </td>
+
+              <td class="py-3 px-4 font-mono text-xs text-gray-600">
+                {{ item.sku }}
+              </td>
+
+              <td class="py-3 px-4 text-gray-600">
+                {{ item.brand || '-' }}
+              </td>
+
+              <td class="py-3 px-4 font-semibold text-gray-900">{{ item.price }} kr</td>
+
+              <td class="py-3 px-4 text-xs text-gray-500">
+                {{ item.date }}
+              </td>
+              <td class="py-3 px-4 text-right">
+                <button
+                  type="button"
+                  (click)="deleteProduct(item.id, item.name)"
+                  class="text-red-600 hover:text-red-800 text-xs font-medium py-1 px-2.5 rounded hover:bg-red-50 transition-colors"
+                >
+                  Radera
+                </button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
