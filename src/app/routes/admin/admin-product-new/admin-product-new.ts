@@ -14,6 +14,7 @@ export class AdminProductNew {
   private router = inject(Router);
 
   errorMessage = signal('');
+  skuErrorMessage = signal('');
   successMessage = signal('');
   isSubmitting = signal(false);
 
@@ -61,7 +62,15 @@ export class AdminProductNew {
       },
       error: (error) => {
         this.isSubmitting.set(false);
-        this.errorMessage.set(error.message);
+
+        if (error.error?.field === 'sku') {
+          this.skuErrorMessage.set(error.error.message);
+          return;
+        } else {
+          this.errorMessage.set(error.error?.error || error.message);
+          return;
+        }
+
       },
     });
   }
