@@ -1,1 +1,84 @@
-<p>product works!</p>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <nav class="mb-8">
+    <a routerLink="/" class="text-xs uppercase tracking-wider text-neutral-500 hover:text-black">
+      Back
+    </a>
+  </nav>
+
+  @if (productResult.isLoading()) {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 animate-pulse">
+      <div class="aspect-[3/4] bg-neutral-200"></div>
+      <div class="space-y-4">
+        <div class="h-8 bg-neutral-200 w-3/4"></div>
+        <div class="h-6 bg-neutral-200 w-1/4"></div>
+        <div class="h-24 bg-neutral-200 w-full mt-6"></div>
+      </div>
+    </div>
+  } @else if (productResult.error()) {
+    <div class="text-center py-20">
+      <h2 class="text-2xl font-bold text-neutral-900">No product found</h2>
+    </div>
+  } @else if (productResult.value(); as product) {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-start">
+      <div class="bg-neutral-100 overflow-hidden aspect-[3/4] w-full">
+        <img
+          [src]="product.image"
+          [alt]="product.name"
+          class="w-full h-full object-cover object-center"
+        />
+      </div>
+      <div class="flex flex-col">
+        @if (product.brand) {
+          <span class="text-xs uppercase tracking-widest text-neutral-400 font-semibold mb-2">
+            {{ product.brand }}
+          </span>
+        }
+
+        <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-neutral-900 uppercase">
+          {{ product.name }}
+        </h1>
+
+        <p class="text-2xl font-semibold text-neutral-900 mt-4">
+          {{ product.price }} SEK
+        </p>
+
+        <div class="border-t border-b border-neutral-200 py-6 my-6">
+          <h3 class="text-xs uppercase font-bold tracking-wider text-neutral-400 mb-2">Description</h3>
+          <p class="text-neutral-700 leading-relaxed text-sm">
+            {{ product.description || 'No description' }}
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <button
+            type="button"
+            class="w-full bg-black text-white py-4 px-8 text-xs uppercase tracking-widest font-bold hover:bg-neutral-800 transition-colors shadow-sm"
+          >
+            Add to cart
+          </button>
+        </div>
+        <div class="mt-8 pt-6 border-t border-neutral-100 text-xs text-neutral-400 space-y-1">
+        </div>
+      </div>
+    </div>
+  }
+  <section class="mt-20 border-t border-neutral-200 pt-12">
+  <h2 class="text-xl font-bold uppercase tracking-wider text-neutral-900 mb-8">
+    Related products
+  </h2>
+
+  @if (relatedResult.isLoading()) {
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 animate-pulse">
+      <div class="h-64 bg-neutral-200"></div>
+      <div class="h-64 bg-neutral-200"></div>
+      <div class="h-64 bg-neutral-200"></div>
+    </div>
+  } @else if (relatedResult.value(); as relatedProducts) {
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      @for (item of relatedProducts; track item.id) {
+        <product-card [product]="item" />
+      }
+    </div>
+  }
+</section>
+</main>

@@ -28,6 +28,7 @@ export class AdminProducts {
     this.http.delete(`http://localhost:8000/api/products/${id}`).subscribe({
       next: () => {
         this.deletedIds.update((ids) => [...ids, id]);
+        console.log(this.deletedIds());
       },
       error: (error) => {
         alert(error.message);

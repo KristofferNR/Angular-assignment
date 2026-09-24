@@ -1,4 +1,8 @@
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-10">
+
+@if (hero.value(); as heroData) {
+  <app-hero [hero]="heroData" />
+}
+<section class="max-w-7xl mx-auto px-4 max-[1024px]:hidden lg:px-8 my-10">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     @for (item of spot.value(); track item.id) {
       <app-spot [spot]="item" />
@@ -9,7 +13,7 @@
   <h1 class="text-2xl font-bold mb-6">Products</h1>
 
   @if (product.isLoading()) {
-    <p>Laddar produkter...</p>
+    <p>Loading...</p>
   }
 
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

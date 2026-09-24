@@ -3,4 +3,5 @@ export interface HeroModel {
     name: string;
     description: string;
     image: string;
+    slug: string;
 }
